@@ -44,6 +44,12 @@ class UI {
         list.appendChild(row);
 
     }
+
+    static clearFields() {
+        document.querySelector('#title').value ='';
+        document.querySelector('#artist').value ='';
+        document.querySelector('#genre').value ='';
+    }
 }
 
 // Store class: Storage
@@ -64,6 +70,9 @@ document.querySelector('#song-form').addEventListener('submit', (e)=> {
 
     //add the song to the UI display
     UI.addSongToList(song);
+
+    // Clear 
+    UI.clearFields();
 });
 
 
