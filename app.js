@@ -47,8 +47,22 @@ class UI {
     static deleteSong(target) {
         if (target.classList.contains('delete')) {
             target.parentElement.parentElement.remove();
+            UI.displayAlert("Song removed.", "success");
+    setTimeout(() => document.querySelector('.alert').remove(), 3000);
         }
 
+    }
+
+    static displayAlert(message, className) {
+        const div = document.createElement('div');
+        div.className = `alert alert-${className}`;
+        div.appendChild(document.createTextNode(message));
+        const container = document.querySelector('.container');
+        const form = document.querySelector('#song-form')
+        container.insertBefore(div, form);
+
+        // Leave after 3 sec
+        setTimeout(() => document.querySelector('.alert').remove(), 3000);
     }
 
     static clearFields() {
@@ -71,16 +85,32 @@ document.querySelector('#song-form').addEventListener('submit', (e)=> {
     const artist = document.querySelector('#artist').value;
     const genre = document.querySelector('#genre').value;
 
-    // instantiate song
-    const song = new Song(title, artist, genre);
+    // data validation
+    if (title === '' || artist === '' || genre === ''){
+        UI.displayAlert("Fill in all fields.", "danger");
+    } else {
+        // instantiate song
+        const song = new Song(title, artist, genre);
 
-    //add the song to the UI display
-    UI.addSongToList(song);
+        //add the song to the UI display
+        UI.addSongToList(song);
 
-    // Clear 
-    UI.clearFields();
+        UI.displayAlert("Song added.", "success");
+        setTimeout(() => document.querySelector('.alert').remove(), 3000);
+    }
+
+        // Clear 
+        UI.clearFields();
+
+       
+
+    
 });
 
 
 // Event: Remove song
-document.addEventListener('click', (e) => UI.deleteSong(e.target));
+document.addEventListener('click', (e) => {
+    UI.deleteSong(e.target)
+    
+});
+    
