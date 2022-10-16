@@ -10,22 +10,9 @@ class Song {
 
 // UI class: UI tasks
 class UI {
-    static displaySongs() {
-        const storedSongs = [
-            {
-                title: "Song Name",
-                artist: "Artist Name",
-                genre: "genre"
-            },
+    static displaySongs() {  
 
-            {
-                title: "Song Name",
-                artist: "Artist Name",
-                genre: "genre"
-            }
-        ];
-
-        const songs = storedSongs;
+        const songs = Store.getSongs();
 
         songs.forEach((song) => UI.addSongToList(song));
      
@@ -73,6 +60,41 @@ class UI {
 }
 
 // Store class: Storage
+class Store {
+    static getSongs() {
+        let songs;
+        if(localStorage.getItem('songs') === null){
+            songs = [];
+        } else {
+            songs = JSON.parse(localStorage.getItem('songs'));
+        }
+        
+        return songs;
+    }
+
+    static addSong(song) {
+        const songs = Store.getSongs();
+
+        songs.push(song);
+        localStorage.setItem('songs', JSON.stringify(songs));
+    }
+
+    static removeSong(title, artist, genre) {
+        const songs = Store.getSongs();
+
+        songs.forEach((song, index) => {
+            if(song.title === title && song.artist === artist && song.genre === genre) {
+                songs.splice(index, 1);
+            }
+        });
+
+        localStorage.setItem('songs', JSON.stringify(songs));
+    }
+}
+
+
+
+
 
 // Event: Show song
 document.addEventListener('DOMContentLoaded', UI.displaySongs);
@@ -95,6 +117,9 @@ document.querySelector('#song-form').addEventListener('submit', (e)=> {
         //add the song to the UI display
         UI.addSongToList(song);
 
+        // add the song to local storage
+        Store.addSong(song);
+
         UI.displayAlert("Song added.", "success");
         setTimeout(() => document.querySelector('.alert').remove(), 3000);
     }
@@ -102,9 +127,6 @@ document.querySelector('#song-form').addEventListener('submit', (e)=> {
         // Clear 
         UI.clearFields();
 
-       
-
-    
 });
 
 
