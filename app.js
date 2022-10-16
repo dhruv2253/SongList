@@ -44,6 +44,12 @@ class UI {
         list.appendChild(row);
 
     }
+    static deleteSong(target) {
+        if (target.classList.contains('delete')) {
+            target.parentElement.parentElement.remove();
+        }
+
+    }
 
     static clearFields() {
         document.querySelector('#title').value ='';
@@ -76,5 +82,5 @@ document.querySelector('#song-form').addEventListener('submit', (e)=> {
 });
 
 
-
 // Event: Remove song
+document.addEventListener('click', (e) => UI.deleteSong(e.target));
