@@ -92,10 +92,6 @@ class Store {
     }
 }
 
-
-
-
-
 // Event: Show song
 document.addEventListener('DOMContentLoaded', UI.displaySongs);
 
@@ -132,7 +128,14 @@ document.querySelector('#song-form').addEventListener('submit', (e)=> {
 
 // Event: Remove song
 document.addEventListener('click', (e) => {
+    // UI remove
     UI.deleteSong(e.target)
     
+    // Remove from local storage
+    const genre = e.target.parentElement.previousElementSibling.textContent;
+    const artist = e.target.parentElement.previousElementSibling.previousElementSibling.textContent;
+    const title = e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+    Store.removeSong(title, artist, genre);
+
 });
     
